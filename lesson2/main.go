@@ -8,15 +8,14 @@ import (
 
 // Считаем площадь прямоугольника
 func calcSquare(top int, left int) int {
-	square := top * left
 
-	return square
+	return top * left
 }
 
 // Считаем диаметр и длинну окружности по площади круга
 func calcCircleDL(square int) (float64, float64) {
-	length := math.Pow(float64(square), 2) / (4 * math.Pi)
-	dia := math.Sqrt(float64(square)) / (math.Pi)
+	length := math.Sqrt(float64(square) * 4 * math.Pi)
+	dia := math.Sqrt(4 * float64(square) / math.Pi)
 	return dia, length
 }
 
@@ -24,7 +23,7 @@ func calcCircleDL(square int) (float64, float64) {
 func divideByDigits(number int) (int, int, int) {
 	hundreds := number / 100
 	dozens := (number % 100) / 10
-	units := ((number % 100) % 10)
+	units := (number % 100) % 10
 	return hundreds, dozens, units
 }
 
@@ -41,38 +40,30 @@ func main() {
 	}
 	switch *oper {
 	case "calcSquare":
-		{
-			if *left == 0 || *top == 0 {
-				flag.Usage()
-			} else {
-				fmt.Println("Будем считать площадь")
+		if *left == 0 || *top == 0 {
+			flag.Usage()
+		} else {
+			fmt.Println("Будем считать площадь")
 
-				square := calcSquare(*left, *top)
-				fmt.Println("Площадь прямоугольника с длинной левой стороны", *left, "правой", *top, "=", square)
-			}
-
+			square := calcSquare(*left, *top)
+			fmt.Println("Площадь прямоугольника с длинной левой стороны", *left, "правой", *top, "=", square)
 		}
 	case "calcCircleDL":
-		{
-			if *square == 0 {
-				flag.Usage()
-			} else {
-				fmt.Println("Будем считать радиус и длинну")
-				dia, length := calcCircleDL(*square)
-				fmt.Println("Диаметр круга", dia, "длинна окружности", length, "для круга площадью")
-			}
+		if *square == 0 {
+			flag.Usage()
+		} else {
+			fmt.Println("Будем считать радиус и длинну")
+			dia, length := calcCircleDL(*square)
+			fmt.Println("Диаметр круга", dia, "длинна окружности", length, "для круга площадью")
 		}
 	case "divideByDigits":
-		{
-			if *number == 0 {
-				flag.Usage()
-			} else {
-				fmt.Println("Бей, круши, ломай")
-				hundreds, dozens, units := divideByDigits(*number)
-				fmt.Println("В числе", *number, "сотен", hundreds, "десятков", dozens, "единиц", units)
-			}
-
+		if *number == 0 {
+			flag.Usage()
+		} else {
+			fmt.Println("Бей, круши, ломай")
+			hundreds, dozens, units := divideByDigits(*number)
+			fmt.Println("Число", *number, "содержит сотен:", hundreds, "десятков:", dozens, "единиц:", units)
 		}
-
 	}
+
 }
