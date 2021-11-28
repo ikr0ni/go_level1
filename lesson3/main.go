@@ -46,24 +46,23 @@ func getPrime(number int) []int {
 }
 
 //Калькулятор на операции +,-,*,/,sqrt,^
-func simpleCalc(first int, second int, oper string) (float64, error) {
+func simpleCalc(first float64, second float64, oper string) (float64, error) {
 	switch oper {
 	case "+":
-		return float64(first + second), nil
+		return first + second, nil
 	case "-":
-		return float64(first - second), nil
+		return first - second, nil
 	case "*":
-		return float64(first * second), nil
+		return first * second, nil
 	case "/":
 		if second == 0 {
 			return 0, errors.New("Devide by zero, in hell you will be in a good company")
-		} else {
-			return float64(first) / float64(second), nil
 		}
+		return first / second, nil
 	case "^":
-		return math.Pow(float64(first), float64(second)), nil
+		return math.Pow(first, second), nil
 	case "sqrt":
-		return math.Sqrt(float64(first)), nil
+		return math.Sqrt(first), nil
 	default:
 		return 0, errors.New("Something goes wrong, but I don't know what exectly")
 	}
@@ -102,7 +101,7 @@ func main() {
 			fmt.Println("Число", *first, "содержит сотен:", hundreds, "десятков:", dozens, "единиц:", units)
 		}
 	case "+", "-", "/", "*", "^", "sqrt":
-		res, err := simpleCalc(*first, *second, *oper)
+		res, err := simpleCalc(float64(*first), float64(*second), *oper)
 		if err == nil {
 			fmt.Println(*first, *oper, *second, "=", res)
 		} else {
@@ -110,7 +109,7 @@ func main() {
 		}
 	case "getPrime":
 		if *first < 3 {
-			log.Fatal(errors.New("Так не интересно, давай заново."))
+			log.Fatal(errors.New("Так не интересно, первое простое число 2, давай заново."))
 		}
 		fmt.Println(getPrime(*first))
 
