@@ -11,11 +11,12 @@ type ArrayToSort struct {
 }
 
 func (sort *ArrayToSort) Sort() {
-
-	for i := 1; i < len(sort.unsorted); i++ {
-		for j := i; j > 0 && sort.unsorted[j-1] > sort.unsorted[j]; j-- {
-			sort.sorted = append(sort.unsorted[:j-1], sort.unsorted[j], sort.unsorted[j-1])
-			sort.unsorted = append(sort.sorted, sort.unsorted[j+1:]...)
+	sort.sorted = make([]int, len(sort.unsorted))
+	copy(sort.sorted, sort.unsorted)
+	for i := 1; i < len(sort.sorted); i++ {
+		for j := i; j > 0 && sort.sorted[j-1] > sort.sorted[j]; j-- {
+			temp := append(sort.sorted[:j-1], sort.sorted[j], sort.sorted[j-1])
+			sort.sorted = append(temp, sort.sorted[j+1:]...)
 		}
 	}
 }
@@ -25,7 +26,7 @@ func (a *ArrayToSort) GetUnsorted() {
 }
 
 func (a *ArrayToSort) GetSorted() {
-	fmt.Println("Сортированный массив выглядит так:", a.unsorted)
+	fmt.Println("Сортированный массив выглядит так:", a.sorted)
 }
 
 func main() {
@@ -39,9 +40,8 @@ func main() {
 		}
 		array.unsorted = append(array.unsorted, digit)
 	}
-	fmt.Println("1")
-	array.GetUnsorted()
 	array.Sort()
+	array.GetUnsorted()
 	array.GetSorted()
 
 }
