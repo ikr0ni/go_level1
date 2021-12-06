@@ -32,16 +32,45 @@ func (l OneWayList) GetAll() {
 	}
 }
 
-//Разворот рекурсией
-func (l OneWayList) ReverseByRecurse() {
-	if l.next != nil {
-		l.next.ReverseByRecurse()
+//Разворот циклом
+func (l *OneWayList) ReverseByLoop() (reversedList *OneWayList) {
+	//Ставим первую метку, откуда начинаем разворот
+	currentElement := l
+
+	for {
+		if currentElement == nil {
+			break
+		}
+		// Помещаем следующий элемент во времянку
+		temporaryElement := currentElement.next
+		// Помещаем в следующий элемент текущеий элемент в reversed листе
+		currentElement.next = reversedList
+		// назначаем в reversed листе текущим элементом текущий элемент из начального списка
+		reversedList = currentElement
+		//переводим метку на следующий элемент списка
+		currentElement = temporaryElement
 	}
-	fmt.Println(l)
+
+	return
 }
 
-//Разворот циклом
-func (l OneWayList) ReverseByLoop() {
+//Ну и чисто поржатьразвернем вывод спомощью defer
+func (l *OneWayList) ReversByDefer() {
+	for {
+		if l == nil {
+			break
+		}
+		defer fmt.Println(l)
+		l = l.next
+	}
+}
+
+//Псевдоразворот рекурсией
+func (l OneWayList) ReversByRecurse() {
+	if l.next != nil {
+		l.next.ReversByRecurse()
+	}
+	fmt.Println(l)
 }
 
 func main() {
@@ -62,7 +91,14 @@ func main() {
 		}
 
 	}
-
+	fmt.Println("Выведем первоначальный список:")
 	first.GetAll()
-	first.ReverseByRecurse()
+	fmt.Println("Выведем рекурсией список в обратном порядке:")
+	first.ReversByRecurse()
+	reversedList := first.ReverseByLoop()
+	fmt.Println("Выведем список после разворота циклом:")
+	reversedList.GetAll()
+	fmt.Println("А сейчас еще и defer используем, но уже на reversed:")
+	reversedList.ReversByDefer()
+
 }
