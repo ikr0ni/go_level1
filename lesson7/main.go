@@ -6,20 +6,18 @@ import (
 )
 
 //Заворачиваем стрингу в []byte
-type MyString struct {
-	str []byte
-}
+type MyString []byte
 
 //Реализуем метод Write для интерфеса Writer
 func (s *MyString) Write(str []byte) (n int, err error) {
-	s.str = str
+	*s = str
 	return len(str), nil
 }
 
 //Реализуем метод Read для интерфеса Reader
 func (s MyString) Read(str []byte) (n int, err error) {
-	fmt.Println(string(s.str))
-	return len(str), io.EOF
+	fmt.Println(string(s))
+	return len(s), io.EOF
 }
 
 func main() {
@@ -33,5 +31,5 @@ func main() {
 		panic("А ввод все не кончался")
 	}
 	fmt.Println(n, string(str2))
-	fmt.Println(n, string(str.str))
+	fmt.Println(n, string(str))
 }
